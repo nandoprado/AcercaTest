@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using apiAcercaTest.Data;
 using apiAcercaTest.Model;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using Microsoft.AspNetCore.Authorization;
 
 namespace apiAcercaTest.Controllers
 {
@@ -21,14 +24,14 @@ namespace apiAcercaTest.Controllers
         }
 
         // GET: api/CarDeliveries
-        [HttpGet]
+        [HttpGet]        
         public async Task<ActionResult<IEnumerable<CarDeliveries>>> GetCarDeliveries()
         {
-            return await _context.CarDeliveries.ToListAsync();
+            return await _context.CarDeliveries.OrderBy(p => p.OrderNumber).ToListAsync();
         }
 
         // GET: api/CarDeliveries/5
-        [HttpGet("{id}")]
+        [HttpGet("{id}")]        
         public async Task<ActionResult<CarDeliveries>> GetCarDeliveries(Guid id)
         {
             var carDeliveries = await _context.CarDeliveries.FindAsync(id);
@@ -43,15 +46,16 @@ namespace apiAcercaTest.Controllers
 
         // PUT: api/CarDeliveries/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutCarDeliveries(Guid id, CarDeliveries carDeliveries)
+        [HttpPut("{id}")]        
+        public async Task<IActionResult> PutCarDeliveries(Guid id, [FromBody] JObject data)
         {
-            if (id != carDeliveries.ID)
+            var carDelivery = JsonConvert.DeserializeObject<CarDeliveries>(data.ToString());
+            if (id != carDelivery.ID)
             {
                 return BadRequest();
             }
 
-            _context.Entry(carDeliveries).State = EntityState.Modified;
+            _context.Entry(carDelivery).State = EntityState.Modified;
 
             try
             {
@@ -69,22 +73,23 @@ namespace apiAcercaTest.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok(carDelivery);
         }
 
         // POST: api/CarDeliveries
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<CarDeliveries>> PostCarDeliveries(CarDeliveries carDeliveries)
+        [HttpPost]        
+        public async Task<ActionResult<CarDeliveries>> PostCarDeliveries([FromBody] JObject data)
         {
-            _context.CarDeliveries.Add(carDeliveries);
+            var carDelivery = JsonConvert.DeserializeObject<CarDeliveries>(data.ToString());
+            _context.CarDeliveries.Add(carDelivery);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCarDeliveries", new { id = carDeliveries.ID }, carDeliveries);
+            return CreatedAtAction("GetCarDeliveries", new { id = carDelivery.ID }, carDelivery);
         }
 
         // DELETE: api/CarDeliveries/5
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}")]        
         public async Task<IActionResult> DeleteCarDeliveries(Guid id)
         {
             var carDeliveries = await _context.CarDeliveries.FindAsync(id);

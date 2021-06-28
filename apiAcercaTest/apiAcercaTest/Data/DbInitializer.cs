@@ -29,16 +29,6 @@ namespace apiAcercaTest.Data
                 });
             }
 
-            //var carDeliveries = new CarDeliveries[]
-            //{
-            //    new CarDeliveries {OrderNumber = 1, VinNumber ="1S3BMHB68B3286050", Model = "Toyota Yaris",LicensePlate = "2345GTH", DeliveryDate = DateTime.Now},
-            //    new CarDeliveries {OrderNumber = 2, VinNumber ="2S3BMHB68B3286050", Model = "Toyota Corolla",LicensePlate = "2345GTH", DeliveryDate = DateTime.Now},
-            //    new CarDeliveries {OrderNumber = 3, VinNumber ="3S3BMHB68B3286050", Model = "Toyota Auris",LicensePlate = "2345GTH", DeliveryDate = DateTime.Now},
-            //    new CarDeliveries {OrderNumber = 4, VinNumber ="4S3BMHB68B3286050", Model = "Toyota Prius",LicensePlate = "2345GTH", DeliveryDate = DateTime.Now},
-            //    new CarDeliveries {OrderNumber = 5, VinNumber ="5S3BMHB68B3286050", Model = "Toyota Land Cruiser",LicensePlate = "2345GTH", DeliveryDate = DateTime.Now},
-            //    new CarDeliveries {OrderNumber = 6, VinNumber ="6S3BMHB68B3286050", Model = "Toyota Rav4",LicensePlate = "2345GTH", DeliveryDate = DateTime.Now},
-            //};
-
             foreach (var carDelivery in carDeliveries)
             {
                 context.CarDeliveries.Add(carDelivery);
